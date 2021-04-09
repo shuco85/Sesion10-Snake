@@ -1,6 +1,7 @@
 import tkinter as tk
 from random import randint
-
+from os import path
+import sys
 from PIL import Image, ImageTk
 
 MOVE_INCREMENT = 20
@@ -24,10 +25,12 @@ class Snake(tk.Canvas):
 
         # -- LOAD ASSETS --
         try:
-            self.snake_body_image = Image.open('./assets/snake.png')
+            bundle_dir = getattr(sys, '_MEIPASS', path.abspath(path.dirname(__file__)))
+            path_to_snake = path.join(bundle_dir, 'assets', 'snake.png')
+            self.snake_body_image = Image.open(path_to_snake)
             self.snake_body = ImageTk.PhotoImage(self.snake_body_image)
-
-            self.snake_food_image = Image.open('./assets/food.png')
+            path_to_snake_food = path.join(bundle_dir, 'assets', 'food.png')
+            self.snake_food_image = Image.open(path_to_snake_food)
             self.snake_food = ImageTk.PhotoImage(self.snake_food_image)
         except IOError as error:
             print(error)
@@ -42,8 +45,8 @@ class Snake(tk.Canvas):
                          12,
                          text=f"Score: {self.score}",
                          tag='score',
-                         fill='#fff',
-                         font=('TkDefaultFont', 14))
+                         fill='#fff')#,
+                         #font=('TkDefaultFont', 14))
 
         print(self.winfo_width())
 
@@ -51,8 +54,8 @@ class Snake(tk.Canvas):
                          12,
                          text=f"Level: {self.level}",
                          tag='level',
-                         fill='#fff',
-                         font=('TkDefaultFont', 14))
+                         fill='#fff')#,
+                         #font=('TkDefaultFont', 14))
 
         for x_position, y_position in self.snake_positions:
             self.create_image(x_position,
@@ -141,9 +144,9 @@ class Snake(tk.Canvas):
             self.winfo_width() / 2,
             self.winfo_height() / 2,
             text=f"Game Over! You scored {self.score}!",
-            fill='#fff',
-            font=('TkDefaultFont', 24)
-        )
+            fill='#fff')#,
+            #font=('TkDefaultFont', 24)
+
 
     def _on_key_press(self, event):
         new_direction = event.keysym
